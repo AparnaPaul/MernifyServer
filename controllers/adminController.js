@@ -26,8 +26,8 @@ export const loginAdmin = tryCatch(async (req, res) => {
         { expiresIn: "24h" }
     );
 
-    res.cookie('token', jwtToken, { ssameSite: "None",
-        secure: false,
+    res.cookie('token', jwtToken, { sameSite: "None",
+        secure: true,
         httpOnly: false, path: "/",
     });
 
@@ -57,7 +57,7 @@ export const signupAdmin = tryCatch(async (req, res) => {
     );
 
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: false,
+        secure: true,
         httpOnly: false, path: "/",
     });
 
