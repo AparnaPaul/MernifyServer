@@ -26,11 +26,9 @@ export const loginAdmin = tryCatch(async (req, res) => {
         { expiresIn: "24h" }
     );
 
-    res.cookie('token', jwtToken, { 
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production" ? true : false, 
-        sameSite: "Lax",
-        maxAge: 24 * 60 * 60 * 1000 
+    res.cookie('token', jwtToken, { ssameSite: "None",
+        secure: false,
+        httpOnly: false, path: "/",
     });
 
     const adminResponse = { ...admin._doc, role: "admin" }; // Add role to response
@@ -58,7 +56,10 @@ export const signupAdmin = tryCatch(async (req, res) => {
         { expiresIn: "24h" }
     );
 
-    res.cookie('token', jwtToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', jwtToken, { sameSite: "None",
+        secure: false,
+        httpOnly: false, path: "/",
+    });
 
     const adminResponse = { ...admin._doc };
     delete adminResponse.password;
