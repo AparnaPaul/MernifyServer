@@ -27,7 +27,7 @@ export const loginUser = tryCatch(async (req, res) => {
     )
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: false,
+        secure: true,
         httpOnly: false, path: "/",
     });
 
@@ -74,7 +74,7 @@ export const signupUser = tryCatch(async (req, res) => {
 
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: false,
+        secure: true,
         httpOnly: false, path: "/",
     });
 
