@@ -18,7 +18,7 @@ const app = express();
 
 app.use(
     cors({
-      origin:[ "http://localhost:5173", "https://mernify-frontend.vercel.app/"],
+      origin:[ "http://localhost:5173", "https://mernify-frontend.vercel.app"],
       credentials: true, //  Important for sending cookies,
       methods: ["GET","POST","PUT", "DELETE"]
     })
