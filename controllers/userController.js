@@ -3,95 +3,44 @@ import tryCatch from "../utils/tryCatch.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// export const loginUser = tryCatch(async (req, res) => {
-//     const { email, password } = req.body;
-//     const user = await User.findOne({ email })
-//     const errorMsg = "Auth failed email or password is wrong"
-//     if (!user) {
-//         return res.status(403).json({
-//             message: errorMsg,
-//             success: false
-//         })
-//     }
-//     const isPasswordEqual = await bcrypt.compare(password, user.password);
-//     if (!isPasswordEqual) {
-//         return res.status(403).json({
-//             message: errorMsg,
-//             success: false
-//         })
-//     }
-
-//     const jwtToken = jwt.sign({ email: user.email, _id: user._id },
-//         process.env.JWT_SECRET,
-//         { expiresIn: '24h' }
-//     )
-//     // Store token in cookie
-//     res.cookie('token', jwtToken, { sameSite: "None",
-//      path: "/", secure: true,
-//      httpOnly: true
-//     });
-
-//     // Remove password from the response
-//     const userResponse = { ...user._doc };
-//     delete userResponse.password;
-
-//     res.status(200).json({
-//         message: "Login success",
-//         success: true,
-//         user: userResponse
-//     })
-// })
-
 export const loginUser = tryCatch(async (req, res) => {
     const { email, password } = req.body;
-
-    // Find the user by email
-    const user = await User.findOne({ email });
-    const errorMsg = "Authentication failed. Email or password is incorrect.";
-
-    // If user doesn't exist
+    const user = await User.findOne({ email })
+    const errorMsg = "Auth failed email or password is wrong"
     if (!user) {
         return res.status(403).json({
             message: errorMsg,
             success: false
-        });
+        })
     }
-
-    // Compare the provided password with the hashed one in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    const isPasswordEqual = await bcrypt.compare(password, user.password);
+    if (!isPasswordEqual) {
         return res.status(403).json({
             message: errorMsg,
             success: false
-        });
+        })
     }
 
-    // Create a JWT token
     const jwtToken = jwt.sign({ email: user.email, _id: user._id },
         process.env.JWT_SECRET,
-        { expiresIn: '24h' } // Token expiration time (24 hours)
-    );
-
-    // Set JWT token as a cookie
-    res.cookie('token', jwtToken, {
-        httpOnly: true, // Ensures the cookie is only accessible by the server
-        secure: process.env.NODE_ENV === 'production', // Ensure the cookie is sent over HTTPS in production
-        sameSite: 'None', // Cross-origin cookie (useful for React front-end)
-        path: '/',
-        maxAge: 24 * 60 * 60 * 1000, // Cookie expiration time (same as token)
+        { expiresIn: '24h' }
+    )
+    // Store token in cookie
+    res.cookie('token', jwtToken, { sameSite: "None",
+        secure: false,
+        httpOnly: false, path: "/",
     });
 
-    // Remove password from the user object
+    // Remove password from the response
     const userResponse = { ...user._doc };
     delete userResponse.password;
 
-    // Send success response
     res.status(200).json({
-        message: "Login successful",
+        message: "Login success",
         success: true,
         user: userResponse
-    });
-});
+    })
+})
 
 export const signupUser = tryCatch(async (req, res) => {
     const { username, email, password, mobile } = req.body;
@@ -125,8 +74,8 @@ export const signupUser = tryCatch(async (req, res) => {
 
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        path: "/", secure: true,
-        httpOnly: true
+        secure: false,
+        httpOnly: false, path: "/",
     });
 
     // Remove password from the response
