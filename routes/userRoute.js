@@ -5,7 +5,7 @@ import { isValidUser } from "../middlewares/isValidUser.js";
 
 const router = express.Router();
 
-router.post('/user/login', loginValidation, loginUser)
+router.post('/user/login',isValidUser,loginUser)
 router.post('/user/signup', signupValidation, signupUser)
 router.get('/user/me', isValidUser, myProfile)
 router.post('/user/logout', logoutUser)
