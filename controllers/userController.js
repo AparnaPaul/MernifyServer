@@ -27,7 +27,7 @@ export const loginUser = tryCatch(async (req, res) => {
     )
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-     path: "/", secure: process.env.NODE_ENV === "production",
+     path: "/", secure: true,
      httpOnly: true
     });
 
@@ -74,7 +74,7 @@ export const signupUser = tryCatch(async (req, res) => {
 
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        path: "/", secure: process.env.NODE_ENV === "production",
+        path: "/", secure: true,
         httpOnly: true
     });
 
