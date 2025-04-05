@@ -27,14 +27,14 @@ export const loginAdmin = tryCatch(async (req, res) => {
     );
 
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: true,
-        httpOnly: false, path: "/",
+        path: "/", secure: process.env.NODE_ENV === "production",
+        httpOnly: true
     });
 
     const adminResponse = { ...admin._doc, role: "admin" }; // Add role to response
     delete adminResponse.password;
 
-    res.status(200).json({ message: "Login success", success: true, admin: adminResponse, token: jwtToken });
+    res.status(200).json({ message: "Login success", success: true, admin: adminResponse });
 });
 
 export const signupAdmin = tryCatch(async (req, res) => {
@@ -57,8 +57,8 @@ export const signupAdmin = tryCatch(async (req, res) => {
     );
 
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: true,
-        httpOnly: false, path: "/",
+        path: "/", secure: process.env.NODE_ENV === "production",
+        httpOnly: true
     });
 
     const adminResponse = { ...admin._doc };

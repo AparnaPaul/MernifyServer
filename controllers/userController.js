@@ -27,8 +27,8 @@ export const loginUser = tryCatch(async (req, res) => {
     )
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: true,
-        httpOnly: false, path: "/",
+     path: "/", secure: process.env.NODE_ENV === "production",
+     httpOnly: true
     });
 
     // Remove password from the response
@@ -74,8 +74,8 @@ export const signupUser = tryCatch(async (req, res) => {
 
     // Store token in cookie
     res.cookie('token', jwtToken, { sameSite: "None",
-        secure: true,
-        httpOnly: false, path: "/",
+        path: "/", secure: process.env.NODE_ENV === "production",
+        httpOnly: true
     });
 
     // Remove password from the response
